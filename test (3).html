@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Kanban Board</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f8fa;
+      padding: 20px;
+    }
+
+    .kanban-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .kanban-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex-grow: 1;
+      position: relative;
+    }
+
+    .vertical-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .pill {
+      background: #8f9091;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 50px;
+      cursor: grab;
+      display: inline-block;
+    }
+
+    .pill:active {
+      cursor: grabbing;
+    }
+
+    .middle-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .middle-card h4 {
+      margin-bottom: 15px;
+    }
+
+    .add-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .add-button:hover {
+      background: #0056b3;
+    }
+
+    .mild-card {
+      background: #f1f3f5;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: grab;
+    }
+
+    .drop-zone {
+      background: #e9ecef;
+      border: 2px dashed #ccc;
+      flex: 1;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+    }
+
+    .drop-zone.hover {
+      background: #d1e7dd;
+      border-color: #0f5132;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mb-4">Enhanced Kanban Board</h1>
+    <div class="kanban-container">
+      <!-- 1st Card -->
+      <div class="kanban-card vertical-card">
+        <div>
+          <h5>Option</h5>
+          <div class="pills-container" id="option-pills">
+            <div class="pill" draggable="true" data-origin="option-pills" data-id="1">Option 1</div>
+            <div class="pill" draggable="true" data-origin="option-pills" data-id="2">Option 2</div>
+            <div class="pill" draggable="true" data-origin="option-pills" data-id="1">Option 3</div>
+            <div class="pill" draggable="true" data-origin="option-pills" data-id="2">Option 4</div>
+            <div class="pill" draggable="true" data-origin="option-pills" data-id="1">Option 5</div>
+            <div class="pill" draggable="true" data-origin="option-pills" data-id="2">Option 6</div>
+          </div>
+        </div>
+        <div>
+          <h5>Service</h5>
+          <div class="pills-container" id="service-pills">
+            <div class="pill" draggable="true" data-origin="service-pills" data-id="3">Service 1</div>
+            <div class="pill" draggable="true" data-origin="service-pills" data-id="4">Service 2</div>
+            <div class="pill" draggable="true" data-origin="service-pills" data-id="3">Service 3</div>
+            <div class="pill" draggable="true" data-origin="service-pills" data-id="4">Service 4</div>
+            <div class="pill" draggable="true" data-origin="service-pills" data-id="3">Service 5</div>
+            <div class="pill" draggable="true" data-origin="service-pills" data-id="4">Service 6</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Card -->
+      <div class="kanban-card middle-card" id="new-card">
+        <h4>New</h4>
+        <button class="add-button" onclick="addMildCard('new-card-content')">+</button>
+        <div id="new-card-content"></div>
+      </div>
+
+      <!-- Ongoing Card -->
+      <div class="kanban-card middle-card" id="ongoing-card">
+        <h4>Ongoing</h4>
+        <button class="add-button" onclick="addMildCard('ongoing-card-content')">+</button>
+        <div id="ongoing-card-content"></div>
+      </div>
+
+      <!-- Completed Card -->
+      <div class="kanban-card middle-card" id="completed-card">
+        <h4>Completed</h4>
+        <button class="add-button" onclick="addMildCard('completed-card-content')">+</button>
+        <div id="completed-card-content"></div>
+      </div>
+      <div class="kanban-card vertical-card">
+        <div>
+          <h5>Form</h5>
+          <div class="pills-container" id="form-pills">
+            <div class="pill" draggable="true" data-origin="form-pills" data-id="5">Form 1</div>
+            <div class="pill" draggable="true" data-origin="form-pills" data-id="6">Form 2</div>
+            <div class="pill" draggable="true" data-origin="form-pills" data-id="5">Form 3</div>
+            <div class="pill" draggable="true" data-origin="form-pills" data-id="6">Form 4</div>
+            <div class="pill" draggable="true" data-origin="form-pills" data-id="5">Form 5</div>
+            <div class="pill" draggable="true" data-origin="form-pills" data-id="6">Form 6</div>
+          </div>
+        </div>
+        <div>
+          <h5>Panel</h5>
+          <div class="pills-container" id="panel-pills">
+            <div class="pill" draggable="true" data-origin="panel-pills" data-id="7">Panel 1</div>
+            <div class="pill" draggable="true" data-origin="panel-pills" data-id="8">Panel 2</div>
+            <div class="pill" draggable="true" data-origin="panel-pills" data-id="7">Panel 3</div>
+            <div class="pill" draggable="true" data-origin="panel-pills" data-id="8">Panel 4</div>
+            <div class="pill" draggable="true" data-origin="panel-pills" data-id="7">Panel 5</div>
+            <div class="pill" draggable="true" data-origin="panel-pills" data-id="8">Panel 6</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+  <script>
+    const originalPositions = new Map();
+  
+    interact('.pill, .mild-card').draggable({
+      inertia: true,
+      listeners: {
+        start(event) {
+          const { target } = event;
+          if (!originalPositions.has(target)) {
+            originalPositions.set(target, target.closest('.pills-container'));
+          }
+        },
+        move(event) {
+          const { target } = event;
+          const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+          const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+  
+          target.style.transform = `translate(${x}px, ${y}px)`;
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
+        },
+        end(event) {
+          const { target } = event;
+          const dropZones = document.querySelectorAll('.hover');
+  
+          if (dropZones.length > 0) {
+            dropZones[0].appendChild(target);
+            target.style.transform = '';
+            target.removeAttribute('data-x');
+            target.removeAttribute('data-y');
+            dropZones[0].classList.remove('hover');
+  
+            // Add cancel button to the pill
+            addCancelButton(target);
+          }
+        },
+      },
+    });
+  
+    interact('.drop-zone, .middle-card').dropzone({
+      ondragenter(event) {
+        event.target.classList.add('hover');
+      },
+      ondragleave(event) {
+        event.target.classList.remove('hover');
+      },
+      ondrop(event) {
+        const dragged = event.relatedTarget;
+        event.target.appendChild(dragged);
+        dragged.style.transform = '';
+        dragged.removeAttribute('data-x');
+        dragged.removeAttribute('data-y');
+        event.target.classList.remove('hover');
+  
+        // Add cancel button to the pill
+        addCancelButton(dragged);
+      },
+    });
+  
+    function revertToOriginalPosition(target) {
+      const parent = originalPositions.get(target);
+      if (parent) {
+        parent.appendChild(target);
+        target.style.transform = '';
+        target.removeAttribute('data-x');
+        target.removeAttribute('data-y');
+  
+        // Remove the cancel button
+        removeCancelButton(target);
+      }
+    }
+  
+    function addCancelButton(target) {
+      // Ensure only one cancel button exists per pill
+      if (!target.querySelector('.cancel-btn')) {
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = '×';
+        cancelButton.classList.add('cancel-btn');
+        cancelButton.style.position = 'absolute';
+        cancelButton.style.top = '5px';
+        cancelButton.style.right = '5px';
+        cancelButton.style.background = 'red';
+        cancelButton.style.color = 'white';
+        cancelButton.style.border = 'none';
+        cancelButton.style.borderRadius = '50%';
+        cancelButton.style.width = '20px';
+        cancelButton.style.height = '20px';
+        cancelButton.style.cursor = 'pointer';
+  
+        cancelButton.addEventListener('click', () => {
+          revertToOriginalPosition(target);
+        });
+  
+        target.style.position = 'relative'; // Ensure pill has relative positioning
+        target.appendChild(cancelButton);
+      }
+    }
+  
+    function removeCancelButton(target) {
+      const cancelButton = target.querySelector('.cancel-btn');
+      if (cancelButton) {
+        cancelButton.remove();
+      }
+    }
+  
+    function addMildCard(containerId) {
+  const container = document.getElementById(containerId);
+  const mildCard = document.createElement('div');
+  mildCard.classList.add('mild-card');
+
+  const cancelButton = document.createElement('button');
+  cancelButton.classList.add('btn', 'btn-danger', 'btn-sm', 'ms-auto');
+  cancelButton.textContent = 'Cancel';
+  cancelButton.addEventListener('click', () => {
+    const pills = mildCard.querySelectorAll('.pill');
+    pills.forEach(pill => revertToOriginalPosition(pill));
+    mildCard.remove();
+  });
+
+  mildCard.appendChild(cancelButton);
+
+  // Define custom placeholders
+  const placeholders = ['Option', 'Service', 'Form', 'Panel'];
+
+  // Dynamically create drop zones based on placeholders
+  placeholders.forEach((placeholder, index) => {
+    const dropZone = document.createElement('div');
+    dropZone.classList.add('drop-zone');
+    dropZone.textContent = placeholder; // Use the placeholder as text
+    mildCard.appendChild(dropZone);
+  });
+
+  container.appendChild(mildCard);
+}
+
+  </script>
+  
+</body>
+</html>
